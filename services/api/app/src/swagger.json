@@ -1,0 +1,604 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "`MERN-API` provides APIs for various user operations performed on `mern-starter`.",
+        "version": "1.0.0",
+        "title": "MERN API Service"
+    },
+    "basePath": "/api",
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "tags": [
+        {
+            "name": "user",
+            "description": "MERN API users(s)"
+        },
+        {
+            "name": "auth",
+            "description": "MERN API authentication and authorization with Azure AD"
+        }
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/user": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "summary": "Get user(s) of MERN API",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "MongoDB filter to fetch records with specific criteria",
+                        "required": false,
+                        "type": "object",
+                        "schema": {
+                            "example": {
+                                "name": "John Doe"
+                            }
+                        }
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Fetch only the specific field(s) for the given input",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "_id",
+                                "UUID",
+                                "name",
+                                "email",
+                                "createdTime",
+                                "lastUpdatedTime"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "user records to be sorted based on the selected field",
+                        "required": false,
+                        "type": "object",
+                        "schema": {
+                            "$ref": "#/definitions/Sort"
+                        }
+                    },
+                    {
+                        "name": "pagination",
+                        "in": "query",
+                        "description": "Input object to get paginated results",
+                        "type": "object",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Pagination"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/GetUser"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "summary": "Add new user to MERN API",
+                "description": "",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "Input payload of new user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/GetUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "summary": "Get user of MERN API for specific id",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the specific user",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/GetUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "summary": "Update specific user record for user(s)",
+                "description": "",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Mongo document _id to update specific field(s) of a user",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "Input payload with updated field(s) of a user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateUserInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "user"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "summary": "Delete specific user record of user(s)",
+                "description": "",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Mongo document _id to delete a user",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/DeleteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/userinfo": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "summary": "Get logged in userinfo of MERN API",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/GetUserInfo"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Record not found"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/newtoken": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Get new access_token and id_token from Azure AD using refresh_token",
+                "description": "",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "description": "refresh_token of logged in user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GetNewToken"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "schema": {
+                            "$ref": "#/definitions/GetNewTokenResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "GetUser": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "UUID": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "lastUpdatedTime": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "example": {
+                "_id": "5eecbe6b7767fc31e0157f36",
+                "UUID": "476cd3e0-f483-4c55-b1e1-7aeb1fe32448",
+                "name": "John Doe",
+                "email": "john.doe@hcl.com",
+                "createdTime": "2020-06-19T13:32:27.378Z",
+                "lastUpdatedTime": "2020-06-19T13:32:27.378Z"
+            }
+        },
+        "CreateUser": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "UUID": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "UUID",
+                "name",
+                "email"
+            ],
+            "example": {
+                "UUID": "476cd3e0-f483-4c55-b1e1-7aeb1fe32448",
+                "name": "John Doe",
+                "email": "john.doe@hcl.com"
+            }
+        },
+        "UpdateUserInput": {
+            "type": "object",
+            "properties": {
+                "UUID": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "name": "John Wick"
+            }
+        },
+        "UpdateUserResponse": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "lastUpdatedTime": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "example": {
+                "_id": "5eecbe6b7767fc31e0157f36",
+                "name": "John Wick",
+                "email": "john.doe@hcl.com",
+                "createdTime": "2020-06-19T13:32:27.378Z",
+                "lastUpdatedTime": "2020-07-19T13:32:27.378Z"
+            }
+        },
+        "GetUserInfo": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "UUID": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "jonTitle": "string"
+            },
+            "example": {
+                "_id": "5eecbe6b7767fc31e0157f36",
+                "UUID": "476cd3e0-f483-4c55-b1e1-7aeb1fe32448",
+                "name": "John Doe",
+                "email": "john.doe@hcl.com",
+                "jobTitle": "SENIOR SPECIALIST"
+            }
+        },
+        "GetNewToken": {
+            "type": "object",
+            "properties": {
+                "refreshToken": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "refreshToken"
+            ],
+            "example": {
+                "refreshToken": "OAQABAAAAAAAGV_bv21oQQ4ROqh0_1-tAlcfsFp3O6QD_SxdskJN8Idhq3zdYmscgTOalRsyM-PKC6eXj6qgbLJO_P9E4hp08WJmpG3nEM5tfLwL4riai_eOljjlF3JNkLr58d89pCkz0JajozNnsw9BQveTzogxJAQW4BLJmC18iNcnE4Z-1XRVvxEwg5QEO3CXxmu4RLTJNU9PJdQJmzSR88ejQxKWb2G0NifuEN5G8n54s3teglNhsPRY6uTwmViuumVeeWEAntAdFC_YH2X62H62mUY9we-TiSv6r4ACi7BEMKKLHLHMXX6ZsghstrZDrdqmcRAWzLdyjZG_Z4bV0zULCmU9ocAIGB1F0rqR9N8_NZDgMKfWSU6HuVsgNOr1-fmcMN8Lez8g6qS5BeJhpKvTwcuyEqh8_j-VmR-5JY3UV6cYzAQpAykDiY5T_nzJbF1VqBxMqLFnvdJprj93VRQyYupU7a71sbjBgzuaJXMugL4agP9onD2Y9iPOqj54T0pBUXrarIgtD4wsujSrzPzVYvrvY2wbCJjCyULZY7X4Ny9smyji59RD0tYgIQLEbBdNk5jihgyO7oxrJnS7Dp0LLuuAyf3USyGdHZl1kGtOm5t-BQgXezaRJqO6p3iXo3mHhYaSNFirzTzc7RaGK8kn4G2qFTBqAGGNUiWFeBDnat3cIqEEDhFJBFlOKl3QUimyIsmtm2XTJVqJPdvawhPQ8T3jWtRhXRrie4zLMoJ5-KYKf2zC6TFxlqAQp9dVLVRApSCvr6_2toUKTsDLDA4_EaKcK6XzGR18q3-_6KQd9zD0AfTyoZP85bsJzd3sFJc0XKqKmikOF5xXPVcQFTzV-H0npHJe7uluFcgMH_xZ5wWDJryk95gDBaXGJIfTWNknX5W4w_j4lE3nbN611E9hZViLGI1LKUK6p22N0bEZFMc3Bm28ZPPpKrKQbK5REJzmTKxlDaR54RsrxLY-CATdEfsdPciBtEl24aY4pSJCrBkN3RIXBLCQxVVlzjHCVvcOxScOMVfyM6DZfTq_e8H-HUGWK_8n4jDCP5-5jxwEgWh2crb-NjjgEGek0n41sZpOzJtYY3m6LZZIiJ0RHEXXu7VzQy-nRelPrvPSE5bekzATWYzsX9H3jYdI0uGntQViBH-vVLtuXC9KBM7ZQYDwRdXAPqYc1xZyM1buqAYaHiOyEuiuTqHMAI3eVurssH3ki4ukG4A1VQ2s0k7ZAodocuTQGiixpfO2n-6IJfO_tQKyV-9G7PhNycvx1dTov1e5JvxebVlA19AU4G0tqnpb3I3LiW8Gr4KBx1TLA-yGpQvWCkCAA"
+            }
+        },
+        "GetNewTokenResponse": {
+            "type": "object",
+            "properties": {
+                "token_type": {
+                    "type": "string",
+                    "default": "Bearer"
+                },
+                "access_token": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                }
+            },
+            "example": {
+                "token_type": "Bearer",
+                "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imh1Tjk1SXZQZmVocTM0R3pCRFoxR1hHaXJuTSJ9.eyJhdWQiOiI3YzhiMDI3Zi0xYjhmLTRjNGQtODc4Yi0xNGExZDVmMmUzMmEiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vM2RlYTIzYjItMjhhOS00M2IxLTg4N2MtZTRhNWE3OGE1NGVmL3YyLjAiLCJpYXQiOjE1OTUyNTA1OTIsIm5iZiI6MTU5NTI1MDU5MiwiZXhwIjoxNTk1MjU0NDkyLCJhaW8iOiJBVlFBcS84UUFBQUF0OGZCU0pRdVpSV00xeWxEdjMzMlNRUytMbjZtVy9NMUMxa1Y3QkFhNHgvamxCK0hzM2xSYmMvMGtla2h6UG9sMlM0Nm5DODdIazhJbllKTEk0clFYWW9YWHBPdUQ5OFBacjBwMTJTMDBSST0iLCJhenAiOiI3YzhiMDI3Zi0xYjhmLTRjNGQtODc4Yi0xNGExZDVmMmUzMmEiLCJhenBhY3IiOiIxIiwiZW1haWwiOiJrYXJ0aGljay5jaGlubmFzYW15QGhjbC5jb20iLCJmYW1pbHlfbmFtZSI6IkNoaW5uYXNhbXkiLCJnaXZlbl9uYW1lIjoia2FydGhpY2suY2hpbm5hc2FteUBoY2wuY29tIiwiaG9tZV9vaWQiOiI2NmIwMzA1Zi00MTc5LTRmNzUtYjhmZS1mMjYwYjlhNDM4ZWQiLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xODlkZTczNy1jOTNhLTRmNWEtOGI2OC02ZjRjYTk5NDE5MTIvIiwibmFtZSI6ImthcnRoaWNrLmNoaW5uYXNhbXlAaGNsLmNvbSBDaGlubmFzYW15Iiwib2lkIjoiMWEwZmQ1NmQtNjMxMS00MGRiLWFjNjgtYTNiN2VjN2Q0NmE1IiwicHJlZmVycmVkX3VzZXJuYW1lIjoia2FydGhpY2suY2hpbm5hc2FteUBoY2wuY29tIiwic2NwIjoiYWNjZXNzX2FzX3VzZXIiLCJzaWQiOiIzNTkzNzdmYS1jNWE3LTRiYWQtOTUxMi05MjVhOTA5YTM2YjgiLCJzdWIiOiJDd1UtcVF3QlBFd25RdXR0N281VmNZcEVEUE9hMWdEVDZ3X19IdlRpNXFNIiwidGlkIjoiM2RlYTIzYjItMjhhOS00M2IxLTg4N2MtZTRhNWE3OGE1NGVmIiwidXRpIjoieXZLdk41cTJua2lrVjVpby1BY2ZBZyIsInZlciI6IjIuMCJ9.25KY1XOaPRof5OCemE9SZB7bJm68i8N5rFtEdjmzyBnhfu2n957Y2WVqNnc0P3p4phMCZN__wwsUhsAYvNGyyi8_RcD8L36C4otG45_7XsaOjWhJtx4F0R8qYcPAUPI6ZANzohVdlOl41DGxN_Y2Lb_nW70tZwCEXytEyfNQE8Ubdr65CVyekWRVPonq8zX73SglecPgeuGDJdUgVF6LWQUbcXaiNUO1uOj6i-WYiXxUKSkL2D2uA-gGnzliTu-G5sUQ_NnPW37yHtPQu5P7IdPkZAJAvvNw5rFUCCH8atcb4H37fR1hTs_bxAI-a-cjyzuy_SkZedpgyDIwj0RQ8A",
+                "refresh_token": "OAQABAAAAAAAGV_bv21oQQ4ROqh0_1-tAlcfsFp3O6QD_SxdskJN8Idhq3zdYmscgTOalRsyM-PKC6eXj6qgbLJO_P9E4hp08WJmpG3nEM5tfLwL4riai_eOljjlF3JNkLr58d89pCkz0JajozNnsw9BQveTzogxJAQW4BLJmC18iNcnE4Z-1XRVvxEwg5QEO3CXxmu4RLTJNU9PJdQJmzSR88ejQxKWb2G0NifuEN5G8n54s3teglNhsPRY6uTwmViuumVeeWEAntAdFC_YH2X62H62mUY9we-TiSv6r4ACi7BEMKKLHLHMXX6ZsghstrZDrdqmcRAWzLdyjZG_Z4bV0zULCmU9ocAIGB1F0rqR9N8_NZDgMKfWSU6HuVsgNOr1-fmcMN8Lez8g6qS5BeJhpKvTwcuyEqh8_j-VmR-5JY3UV6cYzAQpAykDiY5T_nzJbF1VqBxMqLFnvdJprj93VRQyYupU7a71sbjBgzuaJXMugL4agP9onD2Y9iPOqj54T0pBUXrarIgtD4wsujSrzPzVYvrvY2wbCJjCyULZY7X4Ny9smyji59RD0tYgIQLEbBdNk5jihgyO7oxrJnS7Dp0LLuuAyf3USyGdHZl1kGtOm5t-BQgXezaRJqO6p3iXo3mHhYaSNFirzTzc7RaGK8kn4G2qFTBqAGGNUiWFeBDnat3cIqEEDhFJBFlOKl3QUimyIsmtm2XTJVqJPdvawhPQ8T3jWtRhXRrie4zLMoJ5-KYKf2zC6TFxlqAQp9dVLVRApSCvr6_2toUKTsDLDA4_EaKcK6XzGR18q3-_6KQd9zD0AfTyoZP85bsJzd3sFJc0XKqKmikOF5xXPVcQFTzV-H0npHJe7uluFcgMH_xZ5wWDJryk95gDBaXGJIfTWNknX5W4w_j4lE3nbN611E9hZViLGI1LKUK6p22N0bEZFMc3Bm28ZPPpKrKQbK5REJzmTKxlDaR54RsrxLY-CATdEfsdPciBtEl24aY4pSJCrBkN3RIXBLCQxVVlzjHCVvcOxScOMVfyM6DZfTq_e8H-HUGWK_8n4jDCP5-5jxwEgWh2crb-NjjgEGek0n41sZpOzJtYY3m6LZZIiJ0RHEXXu7VzQy-nRelPrvPSE5bekzATWYzsX9H3jYdI0uGntQViBH-vVLtuXC9KBM7ZQYDwRdXAPqYc1xZyM1buqAYaHiOyEuiuTqHMAI3eVurssH3ki4ukG4A1VQ2s0k7ZAodocuTQGiixpfO2n-6IJfO_tQKyV-9G7PhNycvx1dTov1e5JvxebVlA19AU4G0tqnpb3I3LiW8Gr4KBx1TLA-yGpQvWCkCAA"
+            }
+        },
+        "DeleteResponse": {
+            "type": "object",
+            "properties": {
+                "ok": {
+                    "type": "number"
+                },
+                "n": {
+                    "type": "number"
+                },
+                "deletedCount": {
+                    "type": "number"
+                }
+            },
+            "example": {
+                "ok": 1,
+                "n": 1,
+                "deletedCount": 1
+            }
+        },
+        "Pagination": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "number",
+                    "minimum": 1
+                },
+                "perPage": {
+                    "type": "number",
+                    "minimum": 1
+                }
+            },
+            "required": [
+                "page",
+                "perPage"
+            ],
+            "example": {
+                "page": 1,
+                "perPage": 4
+            }
+        },
+        "Sort": {
+            "type": "object",
+            "properties": {
+                "field": {
+                    "type": "string",
+                    "user": [
+                        "_id",
+                        "UUID",
+                        "name",
+                        "email",
+                        "createdTime",
+                        "lastUpdatedTime"
+                    ]
+                },
+                "order": {
+                    "type": "string",
+                    "enum": [
+                        "ASC",
+                        "DESC"
+                    ]
+                }
+            },
+            "required": [
+                "field",
+                "order"
+            ],
+            "example": {
+                "field": "_id",
+                "order": "ASC"
+            }
+        }
+    }
+}

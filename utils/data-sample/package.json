@@ -1,0 +1,13 @@
+{
+    "name": "@mern-starter/data-sample",
+    "version": "1.0.0",
+    "description": "mern-starter data samples or binary files like images, videos etc.",
+    "main": "index.js",
+    "keywords": [
+        "react",
+        "mern-starter",
+        "hclsw"
+    ],
+    "author": "mern-starter",
+    "license": "ISC"
+}

@@ -1,0 +1,13 @@
+{
+    "name": "@mern-starter/helpers",
+    "version": "1.0.0",
+    "description": "mern-starter helper or utility methods.",
+    "main": "index.js",
+    "keywords": [
+        "react",
+        "mern-starter",
+        "hclsw"
+    ],
+    "author": "mern-starter",
+    "license": "ISC"
+}

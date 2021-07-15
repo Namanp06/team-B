@@ -1,0 +1,73 @@
+@import '../../assets/utils/common';
+
+.hms-footer {
+    display: flex;
+    align-items: center;
+    background-color: #262626;
+    color: #ffffff;
+    padding: 2rem 1rem;
+    height: 4rem;
+
+    &-nav {
+        flex: 1 1 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+
+        &-item {
+            display: flex;
+            align-items: center;
+            height: 100%;
+
+            a {
+                display: flex;
+                align-items: center;
+                height: 100%;
+                color: currentColor;
+                text-decoration: none !important;
+                @include no-outline;
+
+                &:hover {
+                    color: currentColor;
+                }
+
+                img {
+                    height: 100%;
+                }
+            }
+
+            &:first-child {
+                a {
+                    img {
+                        width: 14.375rem;
+                    }
+                }
+
+                @media only screen and (max-width: 372px) {
+                    display: none;
+                }
+            }
+
+            &:last-child {
+                a {
+                    justify-content: flex-end;
+
+                    img {
+                        height: 2.25rem;
+                        width: 6rem;
+                    }
+                }
+
+                @media only screen and (max-width: 372px) {
+                    display: none;
+                }
+            }
+        }
+
+        @media only screen and (max-width: 372px) {
+            justify-content: center;
+        }
+    }
+}

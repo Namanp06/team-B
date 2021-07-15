@@ -1,0 +1,12 @@
+.hms-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 64px;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    @media only screen and (max-width: 372px) {
+        margin-top: 56px;
+    }
+}

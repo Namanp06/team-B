@@ -1,0 +1,25 @@
+{
+    "name": "root",
+    "private": true,
+    "workspaces": {
+        "packages": [
+            "services/**/*",
+            "utils/**/*"
+        ]
+    },
+    "scripts": {
+        "install-all": "yarn install",
+        "uninstall-all": "lerna clean -y",
+        "test-all": "lerna run test",
+        "build-all": "lerna run build"
+    },
+    "keywords": [
+        "react",
+        "mern",
+        "mern-starter",
+        "hclsw"
+    ],
+    "devDependencies": {
+        "lerna": "^3.16.4"
+    }
+}
