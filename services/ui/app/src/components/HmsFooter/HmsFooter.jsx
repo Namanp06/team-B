@@ -18,7 +18,7 @@ const HmsFooter = props => (
             </li>
             <li className="hms-footer-nav-item">
                 <a href="/">
-                    <Box>Copyright &copy; 2021 HCL Technologies Limited test</Box>
+                    <Box>Copyright &copy; 2021 HCL Technologies Limited</Box>
                 </a>
             </li>
             <li className="hms-footer-nav-item">
